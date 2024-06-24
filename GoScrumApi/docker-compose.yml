@@ -9,7 +9,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - 5433:5432
 
   server:
     image: amazoncorretto:17
@@ -21,6 +21,7 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
+    restart: on-failure
 
 volumes:
   postgres_data:
