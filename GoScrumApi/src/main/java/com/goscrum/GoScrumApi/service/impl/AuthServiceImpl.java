@@ -7,6 +7,7 @@ import com.GoScrum.GoScrumApi.repository.RoleRepository;
 import com.GoScrum.GoScrumApi.repository.UserRepository;
 import com.GoScrum.GoScrumApi.service.AuthService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -14,6 +15,8 @@ import java.util.Set;
 
 @Service
 public class AuthServiceImpl implements AuthService {
+
+    @Autowired
     private UserRepository userRepository;
     private RoleRepository roleRepository;
 
@@ -42,11 +45,11 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(registerDto.getPassword());
         user.setDevice_id(registerDto.getDeviceId());
 
-        Set<Role> roles = new HashSet<>();
-        Role userRole = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        roles.add(userRole);
-        user.setRoles(roles);
+        // Set<Role> roles = new HashSet<>();
+        // Role userRole = roleRepository.findByName("ROLE_USER")
+        //         .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        // roles.add(userRole);
+        // user.setRoles(roles);
 
         userRepository.save(user);
         return "User registered successfully!";
