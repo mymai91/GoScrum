@@ -1,4 +1,4 @@
-package com.goscrum.GoScrumApi;
+package com.GoScrum.GoScrumApi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

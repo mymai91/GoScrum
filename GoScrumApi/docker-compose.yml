@@ -9,18 +9,22 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - 5433:5432
 
   server:
     image: amazoncorretto:17
     volumes:
       - ./:/app
     working_dir: /app
-    entrypoint: ./gradlew bootRun -Dspring_profiles_active=docker
+#    entrypoint: ./gradlew bootRun -Dspring_profiles_active=docker
+#    automatic restart
+    entrypoint: ./gradlew bootRun -Dspring-boot.run.profiles=docker
     ports:
       - "8080:8080"
+      - "5008:5008"
     depends_on:
       - postgres
+    restart: on-failure
 
 volumes:
   postgres_data:
