@@ -45,13 +45,17 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(registerDto.getPassword());
         user.setDevice_id(registerDto.getDeviceId());
 
-        // Set<Role> roles = new HashSet<>();
-        // Role userRole = roleRepository.findByName("ROLE_USER")
-        //         .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        // roles.add(userRole);
-        // user.setRoles(roles);
+        Set<Role> roles = new HashSet<>();
+        Role userRole = findUserRole();
+        roles.add(userRole);
+        user.setRoles(roles);
 
         userRepository.save(user);
         return "User registered successfully!";
+    }
+
+    public Role findUserRole() {
+        Role userRole = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Role not found"));
+        return userRole;
     }
 }
