@@ -16,9 +16,9 @@ services:
     volumes:
       - ./:/app
     working_dir: /app
-    entrypoint: ./gradlew bootRun -Dspring_profiles_active=docker
+#    entrypoint: ./gradlew bootRun -Dspring_profiles_active=docker
 #    automatic restart
-#    entrypoint: ./gradlew bootRun -Dspring-boot.run.profiles=docker
+    entrypoint: ./gradlew bootRun -Dspring-boot.run.profiles=docker
     ports:
       - "8080:8080"
       - "5008:5008"

@@ -8,6 +8,7 @@ import com.GoScrum.GoScrumApi.repository.UserRepository;
 import com.GoScrum.GoScrumApi.service.AuthService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -20,11 +21,13 @@ public class AuthServiceImpl implements AuthService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
 
+    private PasswordEncoder passwordEncoder;
 
-    public  AuthServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+
+    public  AuthServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -44,6 +47,7 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(registerDto.getEmail());
         user.setPassword(registerDto.getPassword());
         user.setDevice_id(registerDto.getDeviceId());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Set<Role> roles = new HashSet<>();
         Role userRole = findUserRole();
