@@ -1,4 +1,4 @@
-package com.GoScrum.GoScrumApi.config;
+package com.GoScrum.GoScrumApi.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

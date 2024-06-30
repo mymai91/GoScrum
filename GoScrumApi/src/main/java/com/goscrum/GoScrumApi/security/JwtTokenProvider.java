@@ -1,4 +1,4 @@
-package com.GoScrum.GoScrumApi.config;
+package com.GoScrum.GoScrumApi.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
