@@ -1,6 +1,10 @@
 package com.GoScrum.GoScrumApi.payload;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
@@ -13,10 +17,10 @@ public class RoomDto {
 
 	private String description;
 
-	@NotEmpty(message = "isActive status is required")
+	@JsonProperty("isActive")
 	private boolean isActive;
 
-	@NotEmpty(message = "I=isPrivate status is required")
+	@JsonProperty("isPrivate")
 	private boolean isPrivate;
 
 	private String password;

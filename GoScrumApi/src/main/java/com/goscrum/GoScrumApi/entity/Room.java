@@ -1,8 +1,12 @@
 package com.GoScrum.GoScrumApi.entity;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.nio.charset.Charset;
+import java.util.Random;
 import java.util.UUID;
 
 @Getter
@@ -10,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 
+// Database level
 @Entity
 @Table(name = "rooms", uniqueConstraints = {@UniqueConstraint(columnNames = {"slug"})})
 public class Room {
@@ -20,7 +25,7 @@ public class Room {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Column(name = "slug", nullable = false)
+	@Column(name = "slug", nullable = false, unique = true)
 	private String slug;
 
 	@Column(name = "description")
@@ -30,13 +35,50 @@ public class Room {
 	private boolean isActive = true;
 
 	@Column(name = "is_private", nullable = false)
-	private boolean isPrivate = false;
+	private boolean isPrivate;
 
-	@Column(name = "password")
+	@Column(name = "password", nullable = false)
 	private String password;
 
 	@OneToOne
 	@JoinColumn(name = "host_id", nullable = false)
 	private User host;
-	
+
+	@PrePersist
+	private void onPrePersist() {
+		handleDefaultPassword();
+		handleDefaultSlug();
+		handleDefaultStatus();
+	}
+
+	@PostConstruct
+	private void onPostPersist() {
+
+	}
+
+	private void handleDefaultPassword() {
+		if (isPrivate) {
+			this.setPassword("12345");
+			this.setPrivate(true);
+		} else {
+			this.setPrivate(false);
+		}
+	}
+
+	private void handleDefaultStatus() {
+		if (!isActive) {
+			this.setActive(true);
+		}
+	}
+
+	private void handleDefaultSlug() {
+		if (slug == null || slug.isEmpty()) {
+			this.setSlug(generateSlug());
+		}
+	}
+
+	private String generateSlug() {
+		return UUID.randomUUID().toString();
+	}
+
 }
