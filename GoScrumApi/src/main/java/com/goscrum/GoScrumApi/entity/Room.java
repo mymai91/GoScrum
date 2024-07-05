@@ -2,6 +2,7 @@ package com.GoScrum.GoScrumApi.entity;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -9,10 +10,14 @@ import java.nio.charset.Charset;
 import java.util.Random;
 import java.util.UUID;
 
-@Getter
-@Setter
+// @Getter
+// @Setter
+// @NoArgsConstructor
+// @AllArgsConstructor
+
+// @Builder
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
 
 // Database level
 @Entity
@@ -22,63 +27,28 @@ public class Room {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
-	@Column(name = "name", nullable = false)
+	@Column(name = "name")
 	private String name;
 
-	@Column(name = "slug", nullable = false, unique = true)
+	@Column(name = "slug")
 	private String slug;
 
 	@Column(name = "description")
+
 	private String description;
 
-	@Column(name = "is_active", nullable = false)
-	private boolean isActive = true;
+	@Column(name = "is_active")
+	private boolean isActive;
 
-	@Column(name = "is_private", nullable = false)
+	@Column(name = "is_private")
 	private boolean isPrivate;
 
-	@Column(name = "password", nullable = false)
+	@Column(name = "password")
 	private String password;
 
-	@OneToOne
-	@JoinColumn(name = "host_id", nullable = false)
+	// LAZY: Suitable for scenarios where related data is not always needed.
+	// EAGER: Suitable for scenarios where related data is always required.
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "host_id")
 	private User host;
-
-	@PrePersist
-	private void onPrePersist() {
-		handleDefaultPassword();
-		handleDefaultSlug();
-		handleDefaultStatus();
-	}
-
-	@PostConstruct
-	private void onPostPersist() {
-
-	}
-
-	private void handleDefaultPassword() {
-		if (isPrivate) {
-			this.setPassword("12345");
-			this.setPrivate(true);
-		} else {
-			this.setPrivate(false);
-		}
-	}
-
-	private void handleDefaultStatus() {
-		if (!isActive) {
-			this.setActive(true);
-		}
-	}
-
-	private void handleDefaultSlug() {
-		if (slug == null || slug.isEmpty()) {
-			this.setSlug(generateSlug());
-		}
-	}
-
-	private String generateSlug() {
-		return UUID.randomUUID().toString();
-	}
-
 }

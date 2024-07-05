@@ -1,7 +1,7 @@
 package com.GoScrum.GoScrumApi.service;
 
-import com.GoScrum.GoScrumApi.payload.RoomDto;
+import com.GoScrum.GoScrumApi.payload.CreateRoomDto;
 
 public interface RoomService {
-	RoomDto createRoom(RoomDto roomDto);
+	CreateRoomDto createRoom(CreateRoomDto createRoomDto);
 }
