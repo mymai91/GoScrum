@@ -9,6 +9,7 @@ import com.GoScrum.GoScrumApi.repository.UserRepository;
 import com.GoScrum.GoScrumApi.security.JwtTokenProvider;
 import com.GoScrum.GoScrumApi.service.AuthService;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,30 +23,31 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-	@Autowired
-	private UserRepository userRepository;
-	private RoleRepository roleRepository;
+	// @Autowired
+	private final UserRepository userRepository;
+	private final RoleRepository roleRepository;
 
-	private PasswordEncoder passwordEncoder;
+	private final PasswordEncoder passwordEncoder;
 
-	private AuthenticationManager authenticateManager;
+	private final AuthenticationManager authenticateManager;
 
-	private JwtTokenProvider jwtTokenProvider;
+	private final JwtTokenProvider jwtTokenProvider;
 
 
-	public AuthServiceImpl(UserRepository userRepository,
-	                       RoleRepository roleRepository,
-	                       PasswordEncoder passwordEncoder,
-	                       AuthenticationManager authenticateManager,
-	                       JwtTokenProvider jwtTokenProvider) {
-		this.userRepository = userRepository;
-		this.roleRepository = roleRepository;
-		this.passwordEncoder = passwordEncoder;
-		this.authenticateManager = authenticateManager;
-		this.jwtTokenProvider = jwtTokenProvider;
-	}
+	// public AuthServiceImpl(UserRepository userRepository,
+	//                        RoleRepository roleRepository,
+	//                        PasswordEncoder passwordEncoder,
+	//                        AuthenticationManager authenticateManager,
+	//                        JwtTokenProvider jwtTokenProvider) {
+	// 	this.userRepository = userRepository;
+	// 	this.roleRepository = roleRepository;
+	// 	this.passwordEncoder = passwordEncoder;
+	// 	this.authenticateManager = authenticateManager;
+	// 	this.jwtTokenProvider = jwtTokenProvider;
+	// }
 
 	@Override
 	public String register(RegisterDto registerDto) {

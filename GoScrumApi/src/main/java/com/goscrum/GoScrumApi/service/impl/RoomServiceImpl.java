@@ -33,20 +33,14 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public CreateRoomDto createRoom(CreateRoomDto createRoomDto) {
-		// Add the room to users_rooms table
 		User currentUser = authService.getCurrentUser();
 
 		Room room = modelMapper.map(createRoomDto, Room.class);
 		room.setSlug(generateUniqueSlug(room.getSlug()));
 		room.setPassword(generateDefaultPassword(room.isPrivate()));
 		room.setHost(currentUser);
+
 		Room newRoom = roomRepository.save(room);
-
-
-		System.out.println("===========================");
-		System.out.println("currentUser: " + currentUser);
-		System.out.println("===========================");
-
 
 		return modelMapper.map(newRoom, CreateRoomDto.class);
 	}
