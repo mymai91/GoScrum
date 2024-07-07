@@ -1,8 +1,10 @@
 package com.GoScrum.GoScrumApi.service.impl;
 
 import com.GoScrum.GoScrumApi.entity.Room;
+import com.GoScrum.GoScrumApi.entity.User;
 import com.GoScrum.GoScrumApi.payload.CreateRoomDto;
 import com.GoScrum.GoScrumApi.repository.RoomRepository;
+import com.GoScrum.GoScrumApi.service.AuthService;
 import com.GoScrum.GoScrumApi.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -27,14 +29,24 @@ public class RoomServiceImpl implements RoomService {
 
 	private final RoomRepository roomRepository;
 	private final ModelMapper modelMapper;
+	private final AuthService authService;
 
 	@Override
 	public CreateRoomDto createRoom(CreateRoomDto createRoomDto) {
+		// Add the room to users_rooms table
+		User currentUser = authService.getCurrentUser();
+
 		Room room = modelMapper.map(createRoomDto, Room.class);
 		room.setSlug(generateUniqueSlug(room.getSlug()));
 		room.setPassword(generateDefaultPassword(room.isPrivate()));
-
+		room.setHost(currentUser);
 		Room newRoom = roomRepository.save(room);
+
+
+		System.out.println("===========================");
+		System.out.println("currentUser: " + currentUser);
+		System.out.println("===========================");
+
 
 		return modelMapper.map(newRoom, CreateRoomDto.class);
 	}

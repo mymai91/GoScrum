@@ -25,6 +25,6 @@ public class CreateRoomDto {
 
 	private String password;
 
-	@NotNull(message = "Host id is required")
-	private Long hostId;
+	// @NotNull(message = "Host id is required")
+	// private Long hostId;
 }
