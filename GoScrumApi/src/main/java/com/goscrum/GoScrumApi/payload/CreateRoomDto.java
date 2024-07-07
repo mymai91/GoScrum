@@ -1,10 +1,12 @@
 package com.GoScrum.GoScrumApi.payload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 import lombok.Data;
 
 @Data
+// @Builder
 public class CreateRoomDto {
 	private long uuid;
 
@@ -23,6 +25,6 @@ public class CreateRoomDto {
 
 	private String password;
 
-	@NotEmpty(message = "Host id is required")
+	@NotNull(message = "Host id is required")
 	private Long hostId;
 }

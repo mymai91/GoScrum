@@ -1,13 +1,8 @@
 package com.GoScrum.GoScrumApi.entity;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.nio.charset.Charset;
-import java.util.Random;
 import java.util.UUID;
 
 // @Getter
@@ -15,7 +10,6 @@ import java.util.UUID;
 // @NoArgsConstructor
 // @AllArgsConstructor
 
-// @Builder
 @Data
 @NoArgsConstructor
 
@@ -51,4 +45,5 @@ public class Room {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "host_id")
 	private User host;
+
 }

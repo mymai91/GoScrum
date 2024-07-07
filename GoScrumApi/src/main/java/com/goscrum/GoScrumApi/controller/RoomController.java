@@ -29,7 +29,7 @@ public class RoomController {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	// TODO @Valid is not working
 	// No validator could be found for constraint 'jakarta.validation.constraints.NotEmpty' validating type
-	public ResponseEntity<CreateRoomDto> createRoom(@RequestBody CreateRoomDto createRoomDto) {
+	public ResponseEntity<CreateRoomDto> createRoom(@Valid @RequestBody CreateRoomDto createRoomDto) {
 		CreateRoomDto room = roomService.createRoom(createRoomDto);
 		return new ResponseEntity<>(room, HttpStatus.CREATED);
 	}
