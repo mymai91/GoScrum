@@ -3,6 +3,8 @@ package com.GoScrum.GoScrumApi.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 // @Getter
@@ -45,5 +47,12 @@ public class Room {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "host_id")
 	private User host;
+
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(name = "users_rooms",
+			joinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+	private Set<User> users = new HashSet<>();
 
 }

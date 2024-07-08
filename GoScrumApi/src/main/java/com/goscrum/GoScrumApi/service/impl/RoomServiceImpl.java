@@ -4,12 +4,14 @@ import com.GoScrum.GoScrumApi.entity.Room;
 import com.GoScrum.GoScrumApi.entity.User;
 import com.GoScrum.GoScrumApi.payload.CreateRoomDto;
 import com.GoScrum.GoScrumApi.repository.RoomRepository;
+import com.GoScrum.GoScrumApi.repository.UserRepository;
 import com.GoScrum.GoScrumApi.service.AuthService;
 import com.GoScrum.GoScrumApi.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Random;
 import java.util.UUID;
 
@@ -30,6 +32,7 @@ public class RoomServiceImpl implements RoomService {
 	private final RoomRepository roomRepository;
 	private final ModelMapper modelMapper;
 	private final AuthService authService;
+	private final UserRepository userRepository;
 
 	@Override
 	public CreateRoomDto createRoom(CreateRoomDto createRoomDto) {
@@ -39,6 +42,9 @@ public class RoomServiceImpl implements RoomService {
 		room.setSlug(generateUniqueSlug(room.getSlug()));
 		room.setPassword(generateDefaultPassword(room.isPrivate()));
 		room.setHost(currentUser);
+
+		// Add the current user to the room's user set
+		room.getUsers().add(currentUser);
 
 		Room newRoom = roomRepository.save(room);
 
