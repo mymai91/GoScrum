@@ -9,11 +9,13 @@ import com.GoScrum.GoScrumApi.repository.UserRepository;
 import com.GoScrum.GoScrumApi.security.JwtTokenProvider;
 import com.GoScrum.GoScrumApi.service.AuthService;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,30 +23,31 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-	@Autowired
-	private UserRepository userRepository;
-	private RoleRepository roleRepository;
+	// @Autowired
+	private final UserRepository userRepository;
+	private final RoleRepository roleRepository;
 
-	private PasswordEncoder passwordEncoder;
+	private final PasswordEncoder passwordEncoder;
 
-	private AuthenticationManager authenticateManager;
+	private final AuthenticationManager authenticateManager;
 
-	private JwtTokenProvider jwtTokenProvider;
+	private final JwtTokenProvider jwtTokenProvider;
 
 
-	public AuthServiceImpl(UserRepository userRepository,
-	                       RoleRepository roleRepository,
-	                       PasswordEncoder passwordEncoder,
-	                       AuthenticationManager authenticateManager,
-	                       JwtTokenProvider jwtTokenProvider) {
-		this.userRepository = userRepository;
-		this.roleRepository = roleRepository;
-		this.passwordEncoder = passwordEncoder;
-		this.authenticateManager = authenticateManager;
-		this.jwtTokenProvider = jwtTokenProvider;
-	}
+	// public AuthServiceImpl(UserRepository userRepository,
+	//                        RoleRepository roleRepository,
+	//                        PasswordEncoder passwordEncoder,
+	//                        AuthenticationManager authenticateManager,
+	//                        JwtTokenProvider jwtTokenProvider) {
+	// 	this.userRepository = userRepository;
+	// 	this.roleRepository = roleRepository;
+	// 	this.passwordEncoder = passwordEncoder;
+	// 	this.authenticateManager = authenticateManager;
+	// 	this.jwtTokenProvider = jwtTokenProvider;
+	// }
 
 	@Override
 	public String register(RegisterDto registerDto) {
@@ -86,8 +89,41 @@ public class AuthServiceImpl implements AuthService {
 		return token;
 	}
 
+	@Override
+	public User getCurrentUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String)) {
+			Object principal = authentication.getPrincipal();
+			if (principal instanceof User) {
+				return (User) principal;
+			} else if (principal instanceof UserDetails) {
+				String username = ((UserDetails) principal).getUsername();
+				return userRepository.findByUsername(username).orElse(null);
+			}
+		}
+		return null;
+	}
+
+	// public User getCurrentUser() {
+	// 	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	// 	if (authentication != null && authentication.isAuthenticated() && !authentication.getPrincipal().equals("anonymousUser")) {
+	// 		return (User) authentication.getPrincipal();
+	// 	}
+	//
+	// 	return null;
+	// }
+
 	public Role findUserRole() {
 		Role userRole = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Role not found"));
 		return userRole;
+	}
+
+	private UserDetails getCurrentUserDetail() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.isAuthenticated() && !authentication.getPrincipal().equals("anonymousUser")) {
+			return (UserDetails) authentication.getPrincipal();
+		}
+
+		return null;
 	}
 }
