@@ -4,13 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.util.UUID;
 
 @Data
-// @Builder
+// Builder have to go with @Builder @NoArgsConstructor @AllArgsConstructor
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreateQuestionDto {
 	@NotEmpty(message = "Title is required")
 	@Size(min = 10, max = 150, message = "Title must be between 10 and 150 characters")
@@ -22,9 +24,9 @@ public class CreateQuestionDto {
 	@JsonProperty("isActive")
 	private boolean isActive;
 
-	// @NotNull(message = "Display Order is required")
+	@NotNull(message = "Display Order is required")
 	private int displayOrder;
 
-	// @NotNull(message = "Room id is required")
+	@NotNull(message = "Room id is required")
 	private UUID roomId;
 }
