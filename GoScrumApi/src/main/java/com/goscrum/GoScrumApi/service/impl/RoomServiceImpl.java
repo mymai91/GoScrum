@@ -32,7 +32,6 @@ public class RoomServiceImpl implements RoomService {
 	private final RoomRepository roomRepository;
 	private final ModelMapper modelMapper;
 	private final AuthService authService;
-	private final UserRepository userRepository;
 
 	@Override
 	public CreateRoomDto createRoom(CreateRoomDto createRoomDto) {

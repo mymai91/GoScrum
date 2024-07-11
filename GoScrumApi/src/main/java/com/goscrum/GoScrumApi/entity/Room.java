@@ -48,11 +48,13 @@ public class Room {
 	@JoinColumn(name = "host_id")
 	private User host;
 
-
 	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "users_rooms",
 			joinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
 	private Set<User> users = new HashSet<>();
+
+	@OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Question> questions = new HashSet<>();
 
 }
