@@ -1,7 +1,7 @@
 package com.GoScrum.GoScrumApi.controller;
 
-import com.GoScrum.GoScrumApi.payload.CreateRoomDto;
-import com.GoScrum.GoScrumApi.service.RoomService;
+import com.GoScrum.GoScrumApi.payload.CreateQuestionDto;
+import com.GoScrum.GoScrumApi.service.QuestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,21 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/rooms")
-public class RoomController {
+@RequestMapping("/api/questions")
+public class QuestionController {
 
-	// private RoomService roomService;
-	//
-	// public RoomController(RoomService roomService) {
-	// 	this.roomService = roomService;
-	// }
-
-	private final RoomService roomService;
+	private final QuestionService questionService;
 
 	@PostMapping("/create")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<CreateRoomDto> createRoom(@Valid @RequestBody CreateRoomDto createRoomDto) {
-		CreateRoomDto room = roomService.createRoom(createRoomDto);
-		return new ResponseEntity<>(room, HttpStatus.CREATED);
+	public String createQuestion(@Valid @RequestBody CreateQuestionDto createQuestionDto) {
+		CreateQuestionDto question = questionService.createQuestion(createQuestionDto);
+		System.out.println("========================");
+		System.out.println(question);
+		System.out.println("========================");
+		return "Question is created successfully";
 	}
 }
