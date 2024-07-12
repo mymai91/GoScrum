@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -33,15 +34,20 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 
-
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "users_roles",
 			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 	private Set<Role> roles;
 
+	// One user can host multiple rooms
+	@OneToMany(mappedBy = "host", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Room> hostedRooms = new HashSet<>();
 
-	@OneToOne(mappedBy = "host", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Room room;
 
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(name = "users_rooms",
+			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"))
+	private Set<Room> rooms = new HashSet<>();
 }

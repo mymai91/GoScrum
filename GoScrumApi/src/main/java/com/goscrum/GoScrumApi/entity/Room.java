@@ -44,7 +44,9 @@ public class Room {
 
 	// LAZY: Suitable for scenarios where related data is not always needed.
 	// EAGER: Suitable for scenarios where related data is always required.
-	@OneToOne(fetch = FetchType.LAZY)
+
+	// One room belongs to one host
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "host_id")
 	private User host;
 
