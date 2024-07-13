@@ -40,7 +40,7 @@ public class User {
 			inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 	private Set<Role> roles;
 
-	// One user can host multiple rooms
+	// User creator - Room association: One user can host multiple rooms
 	@OneToMany(mappedBy = "host", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Room> hostedRooms = new HashSet<>();
 
@@ -50,4 +50,8 @@ public class User {
 			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"))
 	private Set<Room> rooms = new HashSet<>();
+
+	// User - Vote association: One user can have many votes
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Vote> votes = new HashSet<>();
 }
