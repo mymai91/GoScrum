@@ -21,9 +21,9 @@ public class QuestionController {
 
 	@PostMapping("/create")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public String createQuestion(@Valid @RequestBody CreateQuestionDto createQuestionDto) {
+	public ResponseEntity<CreateQuestionDto> createQuestion(@Valid @RequestBody CreateQuestionDto createQuestionDto) {
 		CreateQuestionDto question = questionService.createQuestion(createQuestionDto);
 
-		return "Question is created successfullyyyyy";
+		return new ResponseEntity<>(question, HttpStatus.CREATED);
 	}
 }
