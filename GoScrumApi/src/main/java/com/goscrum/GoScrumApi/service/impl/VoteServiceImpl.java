@@ -35,8 +35,6 @@ public class VoteServiceImpl implements VoteService {
 
 		Optional<Vote> existingVoteOpt = voteRepository.findByUserIdAndQuestionIdAndRoomId(currentUser.getId(), createVoteDto.getQuestionId(), createVoteDto.getRoomId());
 
-		System.out.println("existingVote: =========" + existingVoteOpt);
-
 		if (existingVoteOpt.isPresent()) {
 			Vote existingVote = existingVoteOpt.get();
 			existingVote.setStatus(VotingStatus.UPDATED);
