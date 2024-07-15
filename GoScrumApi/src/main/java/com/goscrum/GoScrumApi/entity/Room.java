@@ -59,4 +59,7 @@ public class Room {
 	@OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Question> questions = new HashSet<>();
 
+	// Room and Vote association: one room has many votes
+	@OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Vote> votes = new HashSet<>();
 }

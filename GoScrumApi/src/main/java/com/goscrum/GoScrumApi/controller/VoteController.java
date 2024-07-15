@@ -1,7 +1,7 @@
 package com.GoScrum.GoScrumApi.controller;
 
-import com.GoScrum.GoScrumApi.payload.CreateQuestionDto;
-import com.GoScrum.GoScrumApi.service.QuestionService;
+import com.GoScrum.GoScrumApi.payload.CreateVoteDto;
+import com.GoScrum.GoScrumApi.service.VoteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,16 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/questions")
-public class QuestionController {
+@RequestMapping("/api/votes")
+public class VoteController {
 
-	private final QuestionService questionService;
+	private final VoteService voteService;
 
 	@PostMapping("/create")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<CreateQuestionDto> createQuestion(@Valid @RequestBody CreateQuestionDto createQuestionDto) {
-		CreateQuestionDto question = questionService.createQuestion(createQuestionDto);
-
-		return new ResponseEntity<>(question, HttpStatus.CREATED);
+	public ResponseEntity<CreateVoteDto> createVote(@Valid @RequestBody CreateVoteDto createVoteDto) {
+		CreateVoteDto vote = voteService.createVote(createVoteDto);
+		return new ResponseEntity<>(vote, HttpStatus.CREATED);
 	}
 }

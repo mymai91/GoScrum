@@ -22,8 +22,6 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	public CreateQuestionDto createQuestion(CreateQuestionDto createQuestionDto) {
-		System.out.println("createQuestionDto: " + createQuestionDto.getRoomId());
-		// getRoom
 		Room room = roomRepository.findById(createQuestionDto.getRoomId()).orElseThrow(() -> new RuntimeException("Question not found"));
 		// getHost
 		Long hostId = room.getHost().getId();
