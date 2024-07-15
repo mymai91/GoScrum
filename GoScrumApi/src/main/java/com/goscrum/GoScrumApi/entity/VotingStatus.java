@@ -5,5 +5,6 @@ public enum VotingStatus {
 	IN_PROGRESS,
 	PENDING,
 	COMPLETED,
-	CANCELED
+	CANCELED,
+	UPDATED
 }

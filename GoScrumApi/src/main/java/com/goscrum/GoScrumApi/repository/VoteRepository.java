@@ -7,7 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface VoteRepository extends JpaRepository<Vote, Long> {
-	// Optional<Vote> findByQuestionIdAndUserId(Long questionId, Long userId);
-	// Optional<Vote> findByUserAndAndQuestionAndRoom(Long userId, UUID questionId, UUID roomId);
+	Optional<Vote> findByUserIdAndQuestionIdAndRoomId(Long userId, UUID questionId, UUID roomId);
 }
-

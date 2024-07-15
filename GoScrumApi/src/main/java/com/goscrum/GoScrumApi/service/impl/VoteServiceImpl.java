@@ -25,7 +25,6 @@ public class VoteServiceImpl implements VoteService {
 
 	@Override
 	public CreateVoteDto createVote(CreateVoteDto createVoteDto) {
-		System.out.println("createVoteDto: ======" + createVoteDto);
 		Vote vote = modelMapper.map(createVoteDto, Vote.class);
 
 		Room room = roomRepository.findById(createVoteDto.getRoomId()).orElseThrow(() -> new RuntimeException("Room not found"));
@@ -39,24 +38,29 @@ public class VoteServiceImpl implements VoteService {
 		User currentUser = authService.getCurrentUser();
 
 		// check if user has already voted
+
+		// Vote existingVote = voteRepository.findByUser(currentUser.getId()).orElseThrow(() -> new RuntimeException("User not found"));
 		// Vote existingVote = voteRepository.findByUserAndQuestion(currentUser, question);
-		// Optional<Vote> existingVote = voteRepository.findByUserAndAndQuestionAndRoom(currentUser.getId(), question.getId(), room.getId());
-		//
-		// if (existingVote.isPresent()) {
-		// 	existingVote.get().setStatus(VotingStatus.valueOf("COMPLETED"));
-		// 	existingVote.get().setScore(createVoteDto.getScore());
-		//
-		// 	Vote updatedVote = voteRepository.save(existingVote.get());
-		// 	return modelMapper.map(updatedVote, CreateVoteDto.class);
-		// }
+		Optional<Vote> existingVoteOpt = voteRepository.findByUserIdAndQuestionIdAndRoomId(currentUser.getId(), createVoteDto.getQuestionId(), createVoteDto.getRoomId());
 
-		vote.setUser(currentUser);
-		vote.setStatus(VotingStatus.valueOf(createVoteDto.getStatus()));
-		vote.setQuestion(question);
-		vote.setRoom(room);
+		System.out.println("existingVote: =========" + existingVoteOpt);
 
-		Vote newVote = voteRepository.save(vote);
+		if (existingVoteOpt.isPresent()) {
+			Vote existingVote = existingVoteOpt.get();
+			existingVote.setStatus(VotingStatus.UPDATED);
+			existingVote.setScore(createVoteDto.getScore());
+			Vote updatedVote = voteRepository.save(existingVote);
 
-		return modelMapper.map(newVote, CreateVoteDto.class);
+			return modelMapper.map(updatedVote, CreateVoteDto.class);
+		} else {
+			vote.setUser(currentUser);
+			vote.setStatus(VotingStatus.COMPLETED);
+			vote.setQuestion(question);
+			vote.setRoom(room);
+
+			Vote newVote = voteRepository.save(vote);
+
+			return modelMapper.map(newVote, CreateVoteDto.class);
+		}
 	}
 }

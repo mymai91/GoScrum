@@ -23,9 +23,7 @@ public class QuestionController {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public String createQuestion(@Valid @RequestBody CreateQuestionDto createQuestionDto) {
 		CreateQuestionDto question = questionService.createQuestion(createQuestionDto);
-		System.out.println("========================");
-		System.out.println(question);
-		System.out.println("========================");
-		return "Question is created successfully";
+
+		return "Question is created successfullyyyyy";
 	}
 }
