@@ -30,17 +30,9 @@ public class VoteServiceImpl implements VoteService {
 		Room room = roomRepository.findById(createVoteDto.getRoomId()).orElseThrow(() -> new RuntimeException("Room not found"));
 
 		Question question = questionRepository.findById(createVoteDto.getQuestionId()).orElseThrow(() -> new RuntimeException("Question not found"));
-		// check if user has already voted
-		// if yes, update vote
-		// if no, create vote
-
 
 		User currentUser = authService.getCurrentUser();
 
-		// check if user has already voted
-
-		// Vote existingVote = voteRepository.findByUser(currentUser.getId()).orElseThrow(() -> new RuntimeException("User not found"));
-		// Vote existingVote = voteRepository.findByUserAndQuestion(currentUser, question);
 		Optional<Vote> existingVoteOpt = voteRepository.findByUserIdAndQuestionIdAndRoomId(currentUser.getId(), createVoteDto.getQuestionId(), createVoteDto.getRoomId());
 
 		System.out.println("existingVote: =========" + existingVoteOpt);
